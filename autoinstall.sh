@@ -17,7 +17,7 @@ timedatectl set-ntp true
 
 # Partition the disk
  
- if [[ $(./parts/disk-partitioner.sh)]]; then
+ if [[ $(./parts/disk-partitioner.sh) ]]; then
    echo "Disk partitioning completed successfully"
  else
    echo "Disk partitioning failed. Exiting..."

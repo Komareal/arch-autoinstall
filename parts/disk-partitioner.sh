@@ -2,19 +2,6 @@
 
 set -e
 
-# prompt the user to confirm the partitioning
-
-read -r -p "This script will partition your disk. Are you sure? (y/N) " response
-case "$response" in
-    [yY])
-        # Proceed with partitioning
-        ;;
-    *)
-        echo "Aborting..."
-        exit 1
-        ;;
-esac
-
 # List the available disks
 
 lsblk
@@ -30,6 +17,19 @@ if [ ! -b "$disk" ]; then
     exit 1
 fi
 
+# prompt the user to confirm the partitioning
+
+read -r -p "This script will partition your disk. Are you sure? (y/N) " response
+case "$response" in
+    [yY])
+        # Proceed with partitioning
+        ;;
+    *)
+        echo "Aborting..."
+        exit 1
+        ;;
+esac
+
 # Wipe the disk
 
 echo "Wiping the disk..."
@@ -41,7 +41,6 @@ echo "Creating partitions..."
 
 sfdisk "$disk" << EOF
 label: gpt
-gpt_ parted
 
 # 1GB EFI partition (adjust size if needed)
 name=1: type=ef00, size=1G
