@@ -42,11 +42,8 @@ echo "Creating partitions..."
 sfdisk "$disk" << EOF
 label: gpt
 
-# 1GB EFI partition (adjust size if needed)
 name=1: type=ef00, size=1G
-
-# Remaining space for Linux partition
-name=2: type=8300, start=0, size=\$  # Use entire remaining space
+name=2: type=8300, start=0, size=\$
 EOF
 
 # Format the partitions
