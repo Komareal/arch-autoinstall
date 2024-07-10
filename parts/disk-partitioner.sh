@@ -42,8 +42,14 @@ echo "Creating partitions..."
 sfdisk "$disk" << EOF
 label: gpt
 name=1: type=ef00, size=1G
-name=2: type=8300, start=0, size=\$
+name=2: type=8300, size=\$
 EOF
+
+# if command is not successful, exit
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to create partitions"
+    exit 1
+fi
 
 # Format the partitions
 
