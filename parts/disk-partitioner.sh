@@ -1,5 +1,6 @@
 #!/bin/bash
-
+function partDisk()
+{
 set -e
 
 # List the available disks
@@ -14,7 +15,7 @@ read -r -p "Enter the disk you want to partition (e.g. /dev/sda): " disk
 
 if [ ! -b "$disk" ]; then
     echo "Error: Disk not found"
-    exit 1
+    return 1
 fi
 
 # prompt the user to confirm the partitioning
@@ -26,7 +27,7 @@ case "$response" in
         ;;
     *)
         echo "Aborting..."
-        exit 1
+        return 1
         ;;
 esac
 
@@ -48,10 +49,10 @@ sgdisk -n 2:0:0 -t 2:8300 -c 2:linux "$disk"
 # Print the partition table for verification
 sgdisk -p "$DISK"
 
-# if command is not successful, exit
+# if command is not successful, return
 if [ $? -ne 0 ]; then
     echo "Error: Failed to create partitions"
-    exit 1
+    return 1
 fi
 
 # Format the partitions
@@ -93,3 +94,4 @@ mount -o noatime,compress=lzo,space_cache,subvol=_active/homevol "${disk}2" /mnt
 mount -o noatime,compress=lzo,space_cache,subvol=/  "${disk}2" /mnt/mnt/defvol
 
 return 0
+}
