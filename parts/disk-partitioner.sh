@@ -41,8 +41,8 @@ echo "Creating partitions..."
 
 sfdisk "$disk" << EOF
 label: gpt
-name=1: type=ef, size=1G
-name=2: type=83, start=, size=\$
+name=1, type=ef, size=1G
+name=2, type=83, start=, size=\$
 EOF
 
 # if command is not successful, exit
