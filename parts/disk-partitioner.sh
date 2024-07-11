@@ -39,11 +39,14 @@ sgdisk --zap-all "$disk"
 
 echo "Creating partitions..."
 
-sfdisk "$disk" << EOF
-label: gpt
-name=1, type=ef, size=1G
-name=2, type=83, start=, size=\$
-EOF
+# Create a 1GB EFI partition
+sgdisk -n 1:0:+1G -t 1:EF00 -c 1:efi "$disk"
+
+# Create a partition using the remaining space for Linux
+sgdisk -n 2:0:0 -t 2:8300 -c 2:linux "$disk"
+
+# Print the partition table for verification
+sgdisk -p "$DISK"
 
 # if command is not successful, exit
 if [ $? -ne 0 ]; then
