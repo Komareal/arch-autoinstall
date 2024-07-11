@@ -44,17 +44,22 @@ echo "Creating partitions..."
 # Create a 1GB EFI partition
 sgdisk -n 1:0:+1G -t 1:EF00 -c 1:efi "$disk"
 
+# if command is not successful, return
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to create partitions"
+    return 1
+fi
+
 # Create a partition using the remaining space for Linux
 sgdisk -n 2:0:0 -t 2:8300 -c 2:linux "$disk"
-
-# Print the partition table for verification
-sgdisk -p "$DISK"
 
 # if command is not successful, return
 if [ $? -ne 0 ]; then
     echo "Error: Failed to create partitions"
     return 1
 fi
+# Print the partition table for verification
+sgdisk -p "$DISK"
 
 # Format the partitions
 
@@ -112,7 +117,6 @@ fi
 timedatectl set-ntp true
 
 # Partition the disk
- ./parts/disk-partitioner.sh
 
  if [[ $(partDisk) -eq 0 ]]; then
    echo "Disk partitioning completed successfully"
