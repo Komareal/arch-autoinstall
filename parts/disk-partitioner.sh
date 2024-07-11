@@ -91,3 +91,5 @@ mkdir  -p /mnt/mnt/defvol
 mount "${disk}1" /mnt/boot/efi
 mount -o noatime,compress=lzo,space_cache,subvol=_active/homevol "${disk}2" /mnt/home
 mount -o noatime,compress=lzo,space_cache,subvol=/  "${disk}2" /mnt/mnt/defvol
+
+return 0
